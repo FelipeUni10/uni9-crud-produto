@@ -1,9 +1,9 @@
 <?php
 
-class Produto {
+class Aluno {
     private $conn;   
-    private $host = "65.108.237.84";
-    private $db = "prog_web";
+    private $host = "mysql.jrcf.dev";
+    private $db = "escola";
     private $user = "usrapp";
     private $pass = "010203";
     
@@ -18,13 +18,13 @@ class Produto {
     }
     
     // Método para adicionar um novo produto
-    public function adicionarProduto($nome, $descricao, $preco, $quantidade) {
-        $sql = "INSERT INTO produtos (nome, descricao, preco, quantidade) VALUES (?, ?, ?, ?)";
+    public function adicionarAluno($nome, $email) {
+        $sql = "INSERT INTO alunos (nome, email) VALUES (?, ?)";
         
         if ($stmt = $this->conn->prepare($sql)) {
-            $stmt->bind_param("ssdi", $nome, $descricao, $preco, $quantidade);
+            $stmt->bind_param("ssdi", $nome, $email);
             if ($stmt->execute()) {
-                echo "Produto adicionado com sucesso!";
+                echo "Aluno adicionado com sucesso!";
             } else {
                 echo "Erro ao adicionar o produto: " . $this->conn->error;
             }
@@ -35,8 +35,8 @@ class Produto {
     }
 
     // Método para listar todos os produtos
-    public function listarProdutos() {
-        $sql = "SELECT * FROM produtos";
+    public function listarAlunos() {
+        $sql = "SELECT * FROM alunos";
         $result = $this->conn->query($sql);
 
         if ($result->num_rows > 0) {
@@ -44,18 +44,18 @@ class Produto {
             while ($row = $result->fetch_assoc()) {
                 $produtos[] = $row;
             }
-            return $produtos;
+            return $alunos;
         } else {
             return [];
         }
     }
 
     // Método para alterar um produto
-    public function alterarProduto($id, $nome, $descricao, $preco, $quantidade) {
-        $sql = "UPDATE produtos SET nome = ?, descricao = ?, preco = ?, quantidade = ? WHERE id = ?";
+    public function editarAluno($id, $nome, $email) {
+        $sql = "UPDATE alunos SET nome = ?, email = ? WHERE id = ?";
         
         if ($stmt = $this->conn->prepare($sql)) {
-            $stmt->bind_param("ssdii", $nome, $descricao, $preco, $quantidade, $id);
+            $stmt->bind_param("ssdii", $nome, $email, $id);
             if ($stmt->execute()) {
                 echo "Produto atualizado com sucesso!";
             } else {
